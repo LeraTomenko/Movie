@@ -1,0 +1,24 @@
+@import-normalize;
+@import url(../../fonts.scss);
+
+.wrapper {
+  display: grid;
+  grid-gap: 24px;
+  gap: 24px;
+  grid-template-columns: 500px 500px;
+  justify-content: center;
+ 
+}
+.pagination {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center
+}
+@media screen and (max-width: 425px) {
+  .wrapper{
+    grid-template-columns: 1fr;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+}
