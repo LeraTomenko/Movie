@@ -15,7 +15,7 @@ const cx = cnBind.bind(styles);
 export default class Card extends React.Component {
   state = {
     imgLoad: false,
-    starValue: this.props.starValue,
+    stars: 0,
   };
   static defaultProps = {
     img: imgForPoster,
@@ -25,6 +25,8 @@ export default class Card extends React.Component {
     genre: null,
     vote: 0,
     rating: 0,
+    toStateRate: () => {},
+    starValue: 0,
   };
 
   static propTypes = {
@@ -35,6 +37,8 @@ export default class Card extends React.Component {
     genre: PropTypes.array,
     vote: PropTypes.number,
     rating: PropTypes.number,
+    toStateRate: PropTypes.func,
+    starValue: PropTypes.number,
   };
   movieApi = new MovieApi();
 
@@ -58,18 +62,14 @@ export default class Card extends React.Component {
     }
   }
 
+  setStars(rate, id) {
+    this.setState({ stars: rate });
+    this.props.PutRating(rate, id);
+  }
+
   render() {
-    const {
-      id,
-      img,
-      title,
-      date,
-      genre,
-      description,
-      vote,
-      starValue,
-      toStateRate,
-    } = this.props;
+    const { id, img, title, date, genre, description, vote, starValue } =
+      this.props;
 
     if (!this.state.imgLoad) {
       let image = new Image();
@@ -100,7 +100,6 @@ export default class Card extends React.Component {
           {
             return (
               <>
-                {" "}
                 {
                   <div className={styles.cardWrapper}>
                     <div className={styles.card}>
@@ -108,7 +107,6 @@ export default class Card extends React.Component {
                       <div className={styles.info}>
                         <div className={styles.info__top}>
                           <div className={styles.info__header}>
-                            {" "}
                             <h1 className={styles.info__headerTitle}>
                               {title}
                             </h1>
@@ -120,7 +118,6 @@ export default class Card extends React.Component {
                             {this.convertData(date)}
                           </div>
                           <div className={styles.info__genre}>
-                            {" "}
                             {genre.map((i) => {
                               const nameGenres = genres.find((item) => {
                                 if (item.id === i) {
@@ -129,7 +126,7 @@ export default class Card extends React.Component {
                               });
 
                               return <Tag key={i}> {nameGenres.name}</Tag>;
-                            })}{" "}
+                            })}
                           </div>
                         </div>
 
@@ -143,8 +140,8 @@ export default class Card extends React.Component {
                           <Rate
                             allowHalf
                             count={10}
-                            value={starValue || 0}
-                            onChange={(rate) => toStateRate(rate, id)}
+                            value={starValue || this.state.stars}
+                            onChange={(rate) => this.setStars(rate, id)}
                           />
                         </div>
                       </div>

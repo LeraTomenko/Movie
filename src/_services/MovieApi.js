@@ -18,10 +18,10 @@ export default class MoviaApi {
         return null;
       }
     } catch (e) {
-      return e;
+      throw new Error();
     }
   }
-  async getRatedMovies(page) {
+  async getRatedMovies(page = 1) {
     try {
       const res = await fetch(
         `https://api.themoviedb.org/3/guest_session/${localStorage.getItem(
@@ -30,7 +30,7 @@ export default class MoviaApi {
       );
 
       const result = await res.json();
-      // console.log(result);
+
       if (result.results.length) {
         return {
           movies: result.results.map((arr) => this.transformArrayMovies(arr)),
@@ -40,28 +40,10 @@ export default class MoviaApi {
         return null;
       }
     } catch (e) {
-      return e;
+      throw new Error();
     }
   }
-  async getRate() {
-    try {
-      const res = await fetch(
-        `https://api.themoviedb.org/3/guest_session/${localStorage.getItem(
-          "token_id"
-        )}/rated/movies?api_key=${this._key}`
-      );
 
-      const result = await res.json();
-
-      if (result.results.length) {
-        return result.results.map((arr) => this.transformArrayMovies(arr));
-      } else {
-        return null;
-      }
-    } catch (e) {
-      return e;
-    }
-  }
   // Получения массива жанров
   async getGenres() {
     try {
@@ -72,7 +54,7 @@ export default class MoviaApi {
       const result = await res.json();
       return result.genres;
     } catch (e) {
-      return e;
+      throw new Error();
     }
   }
   // Гостевая сессия
@@ -87,7 +69,7 @@ export default class MoviaApi {
         ? localStorage.getItem("token_id")
         : localStorage.setItem("token_id", token);
     } catch (e) {
-      return e;
+      throw new Error();
     }
   }
   //Отправка оценки
@@ -107,7 +89,7 @@ export default class MoviaApi {
         requestOptions
       );
     } catch (e) {
-      return e;
+      throw new Error();
     }
   }
   //УДАЛЕНИЕ РЕЙТИНГА
@@ -131,7 +113,7 @@ export default class MoviaApi {
       requestOptions
     );
     const ans = await res2.json();
-    console.log(ans);
+    return ans;
   }
 
   // Формирования списка с запроса

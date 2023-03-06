@@ -71,7 +71,7 @@ export default class App extends React.Component {
                 noResultforSearch: true,
               })
         )
-        .catch(this.onError);
+        .catch(() => this.setState({ error: true }));
     } else {
       this.cleanResult();
     }
@@ -108,22 +108,29 @@ export default class App extends React.Component {
     if (e === "rated") {
       this.movieApi
         .getRatedMovies(this.state.currentPageRated)
-        .then((arr) => this.addMoviesRated(arr));
+        .then((arr) => (arr ? this.addMoviesRated(arr) : null))
+        .catch(() => this.setState({ error: true }));
     }
   };
   async componentDidMount() {
-    this.movieApi.getAuthentication();
-
+    this.movieApi
+      .getAuthentication()
+      .catch(() => this.setState({ error: true }));
     const genres = await this.movieApi.getGenres();
     this.setState({ genres: genres });
+  }
+  componentDidCatch() {
+    this.setState({ error: true });
   }
 
   render() {
     // Компаненты
+
     const {
       moviesSearch,
       moviesRated,
       currentPageSearch,
+      currentPageRated,
       totalPagesSearch,
       totalPagesRated,
       error,
@@ -136,7 +143,7 @@ export default class App extends React.Component {
       <CardList
         movies={active === "search" ? moviesSearch : moviesRated}
         rated={moviesRated}
-        currentPage={currentPageSearch}
+        currentPage={active === "search" ? currentPageSearch : currentPageRated}
         setPage={this.setPage}
         totalPages={active === "search" ? totalPagesSearch : totalPagesRated}
         PutRating={this.PutRating}
@@ -161,7 +168,7 @@ export default class App extends React.Component {
               />
             ) : null}
             {noResult}
-            {this.state.loading ? (
+            {this.state.loading && !this.state.error ? (
               <Spin
                 style={{
                   display: "flex",

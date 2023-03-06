@@ -22,7 +22,7 @@ export default class Header extends React.Component {
     return (
       <div className={style.header}>
         <Tabs
-          destroyInactiveTabPane={true}
+          // destroyInactiveTabPane={true}
           items={this.arr}
           mode="horizontal"
           onChange={(e) => setActive(e)}

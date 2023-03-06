@@ -1,73 +1,63 @@
-
-
-.item{
+.item {
   color: rgb(173, 41, 103);
-   
 }
-.cardWrapper{   
-  font-family: 'UI';
-
- 
+.cardWrapper {
+  font-family: "UI";
 }
-.card{ 
+.card {
   display: flex;
   width: 100%;
   height: 280px;
   -webkit-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
-   -moz-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
-   box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
-   
+  -moz-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+  box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
 }
 
- 
-.info{
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-  &__top{
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-  }    
-  &__header{
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  &__top {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  &__header {
     display: flex;
     justify-content: space-between;
-    align-items: center
-  
+    align-items: center;
   }
   &__headerTitle {
-      font-size: 20px;
-      line-height: 28px;
-    }
-  &__headerRate{
-      border-radius: 50% 50%;
-      border: 2px solid yellow;
-      width: 30px;
-      height: 30px;
-      text-align: center;
-      margin-right: 10px;
-      flex-shrink: 0;
-    }
-       
-    &__headerRate span { 
-      display: inline-block;
-      padding: 8px 0 0 1px;
-      font-size: 12px;
-    }
-  &__date{
-    color: #827E7E;
+    font-size: 20px;
+    line-height: 28px;
+  }
+  &__headerRate {
+    border-radius: 50% 50%;
+    border: 2px solid yellow;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    margin-right: 10px;
+    flex-shrink: 0;
+  }
+
+  &__headerRate span {
+    display: inline-block;
+    padding: 8px 0 0 1px;
+    font-size: 12px;
+  }
+  &__date {
+    color: #827e7e;
     font-size: 12px;
     line-height: 22px;
   }
-  &__description{
+  &__description {
     font-size: 12px;
     line-height: 22px;
     max-height: 129px;
   }
-  &__rate{
-    
+  &__rate {
     margin-bottom: 10px;
-   
   }
 }
 
@@ -81,74 +71,64 @@
 .img_wrapper img {
   height: 100%;
   width: 100%;
-
 }
-.spinner{
-  position:absolute;
+.spinner {
+  position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  top:0,
-  
+  top: 0;
 }
 .bad {
-    border-radius: 50% 50%;
-    width: 30px;
-    height: 30px;
-   text-align: center;
-    margin-right: 10px;
-   flex-shrink: 0;
+  border-radius: 50% 50%;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  margin-right: 10px;
+  flex-shrink: 0;
   border: 2px solid #e90000;
- 
 }
 
 .normal {
   border-radius: 50% 50%;
-    width: 30px;
-    height: 30px;
-    text-align: center;
-    margin-right: 10px;
-    flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  margin-right: 10px;
+  flex-shrink: 0;
   border: 2px solid #e97e00;
-  
 }
 
 .good {
   border-radius: 50% 50%;
-    width: 30px;
-    height: 30px;
-    text-align: center;
-    margin-right: 10px;
-    flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  margin-right: 10px;
+  flex-shrink: 0;
   border: 2px solid #e9d100;
- 
 }
 
 .wonderful {
   border-radius: 50% 50%;
-    width: 30px;
-    height: 30px;
-    text-align: center;
-    margin-right: 10px;
-    flex-shrink: 0;
-    border: 2px solid #66e900;
-  
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  margin-right: 10px;
+  flex-shrink: 0;
+  border: 2px solid #66e900;
 }
-@media screen and (max-width: 420px){
+@media screen and (max-width: 420px) {
   .info {
-      
-  
-      &__top {
-        display: block;
-        margin-left: 85px;
-      }
+    &__top {
+      display: block;
+      margin-left: 85px;
     }
+  }
 
   .img_wrapper {
     height: 100px;
     position: absolute;
     width: 70px;
-   }
-  
+  }
 }
-
