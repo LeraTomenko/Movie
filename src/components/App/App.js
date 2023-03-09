@@ -89,7 +89,7 @@ export default class App extends React.Component {
       this.setState({ moviesRated: [] });
       this.setState({ currentPageRated: event });
       this.movieApi
-        .getRatedMovies(this.state.currentPageRated)
+        .getRatedMovies(event)
         .then((arr) => this.addMoviesRated(arr));
     }
   };
@@ -104,6 +104,7 @@ export default class App extends React.Component {
       return { active: e };
     });
     if (e === "rated") {
+      this.setState({ currentPageRated: 1 });
       this.movieApi
         .getRatedMovies(this.state.currentPageRated)
         .then((arr) => (arr ? this.addMoviesRated(arr) : null))
