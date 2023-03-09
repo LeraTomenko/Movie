@@ -1,12 +1,19 @@
 export default class MoviaApi {
   _key = "d2b735b587102de8933ee3f24268d2b2";
+  _token_id = null;
+
+  _apiBase = new URL(`https://api.themoviedb.org/3/`);
 
   // Поиск по ключевому слову
   async getResource(searchWord, page) {
+    const moviesSearch = new URL(`search/movie`, this._apiBase);
+    moviesSearch.searchParams.append("api_key", this._key);
+    moviesSearch.searchParams.append("language", "en-US");
+    moviesSearch.searchParams.append("page", page);
+    moviesSearch.searchParams.append("query", searchWord);
+
     try {
-      const res = await fetch(
-        `https://api.themoviedb.org/3/search/movie?api_key=${this._key}&language=en-US&page=${page}&query="${searchWord}"`
-      );
+      const res = await fetch(`${moviesSearch.toString()}`);
       const result = await res.json();
 
       if (result.results.length) {
@@ -18,17 +25,19 @@ export default class MoviaApi {
         return null;
       }
     } catch (e) {
-      throw new Error();
+      throw new Error(e);
     }
   }
   async getRatedMovies(page = 1) {
-    try {
-      const res = await fetch(
-        `https://api.themoviedb.org/3/guest_session/${localStorage.getItem(
-          "token_id"
-        )}/rated/movies?api_key=${this._key}&page=${page}`
-      );
+    const movieRated = new URL(
+      `guest_session/${this._token_id}/rated/movies`,
+      this._apiBase
+    );
+    movieRated.searchParams.append("api_key", this._key);
+    movieRated.searchParams.append("page", page);
 
+    try {
+      const res = await fetch(`${movieRated.toString()}`);
       const result = await res.json();
 
       if (result.results.length) {
@@ -40,36 +49,42 @@ export default class MoviaApi {
         return null;
       }
     } catch (e) {
-      throw new Error();
+      throw new Error(e);
     }
   }
 
   // Получения массива жанров
   async getGenres() {
+    const genres = new URL(`genre/movie/list`, this._apiBase);
+    genres.searchParams.append("api_key", this._key);
+    genres.searchParams.append("language", "en-US");
     try {
-      const res = await fetch(
-        `https://api.themoviedb.org/3/genre/movie/list?api_key=${this._key}&language=en-US`
-      );
+      const res = await fetch(`${genres.toString()}`);
 
       const result = await res.json();
       return result.genres;
     } catch (e) {
-      throw new Error();
+      throw new Error(e);
     }
   }
   // Гостевая сессия
   async getAuthentication() {
+    // const guestSessions = new URL(`authentication/guest_session/new?`);
+    // guestSessions.searchParams.append("api_key", this._key);
     try {
       const res = await fetch(
-        `https://api.themoviedb.org/3/authentication/guest_session/new?api_key=${this._key}`
+        `${this._apiBase}/authentication/guest_session/new?api_key=${this._key}`
       );
+      // const res = await fetch(`${guestSessions.toString()}`);
       const result = await res.json();
       const token = result.guest_session_id;
       localStorage.getItem("token_id")
         ? localStorage.getItem("token_id")
         : localStorage.setItem("token_id", token);
+      this._token_id = localStorage.getItem("token_id");
+      return this._token_id;
     } catch (e) {
-      throw new Error();
+      throw new Error(e);
     }
   }
   //Отправка оценки
@@ -83,37 +98,12 @@ export default class MoviaApi {
     };
     try {
       fetch(
-        `https://api.themoviedb.org/3/movie/${id}/rating?api_key=${
-          this._key
-        }&guest_session_id=${localStorage.getItem("token_id")}`,
+        `${this._apiBase}/movie/${id}/rating?api_key=${this._key}&guest_session_id=${this._token_id}`,
         requestOptions
       );
     } catch (e) {
-      throw new Error();
+      throw new Error(e);
     }
-  }
-  //УДАЛЕНИЕ РЕЙТИНГА
-  async Deleted() {
-    const requestOptions = {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json;charset=utf-8" },
-    };
-    const res = await fetch(
-      `https://api.themoviedb.org/3/guest_session/${localStorage.getItem(
-        "token_id"
-      )}/rated/movies?api_key=${this._key}`
-    );
-    const result = await res.json();
-    const id = result.results.map((i) => i.id);
-
-    const res2 = await fetch(
-      `https://api.themoviedb.org/3/movie/${id.map((i) => i)}/rating?api_key=${
-        this._key
-      }&guest_session_id=${localStorage.getItem("token_id")}`,
-      requestOptions
-    );
-    const ans = await res2.json();
-    return ans;
   }
 
   // Формирования списка с запроса

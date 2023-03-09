@@ -5,7 +5,6 @@ import { format } from "date-fns";
 import { enGB } from "date-fns/locale";
 import { Tag, Rate, Spin } from "antd";
 
-import MovieApi from "../../_services/MovieApi";
 import imgForPoster from "../../assets/img/poster.jpg";
 import { GenresConsumer } from "../_services_genres/index";
 
@@ -40,7 +39,6 @@ export default class Card extends React.Component {
     toStateRate: PropTypes.func,
     starValue: PropTypes.number,
   };
-  movieApi = new MovieApi();
 
   // Форматирование даты
   convertData = (date) => {

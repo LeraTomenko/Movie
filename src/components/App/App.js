@@ -50,10 +50,6 @@ export default class App extends React.Component {
     });
   };
 
-  // Отображение ошибки
-  onError = () => {
-    this.setState({ error: true, loading: false });
-  };
   //Запрос по поиску
   searchCard = debounce((searchWord, page) => {
     if (searchWord) {
@@ -92,7 +88,9 @@ export default class App extends React.Component {
     if (this.state.active === "rated") {
       this.setState({ moviesRated: [] });
       this.setState({ currentPageRated: event });
-      this.movieApi.getRatedMovies(this.state.currentPageRated);
+      this.movieApi
+        .getRatedMovies(this.state.currentPageRated)
+        .then((arr) => this.addMoviesRated(arr));
     }
   };
   // Удаление при пустом лэйбле
@@ -115,7 +113,16 @@ export default class App extends React.Component {
   async componentDidMount() {
     this.movieApi
       .getAuthentication()
+      .then((token) =>
+        token
+          ? this.movieApi
+              .getRatedMovies(this.state.currentPageRated)
+              .then((arr) => (arr ? this.addMoviesRated(arr) : null))
+              .catch(() => this.setState({ error: true }))
+          : null
+      )
       .catch(() => this.setState({ error: true }));
+
     const genres = await this.movieApi.getGenres();
     this.setState({ genres: genres });
   }
@@ -155,6 +162,7 @@ export default class App extends React.Component {
     ) : null;
 
     //
+
     return (
       <div className={styles.wrapper}>
         <GenresProvider value={this.state.genres}>
